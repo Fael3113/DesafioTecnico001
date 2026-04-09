@@ -9,7 +9,7 @@ import java.math.BigDecimal;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Estatistica {
+public class EstatisticaDTO {
 
 	private Long count;
 	private BigDecimal sum;
