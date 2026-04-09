@@ -8,6 +8,12 @@ import java.time.OffsetDateTime;
 @Service
 public class TransacaoService {
 
+	private TransacaoRepository transacaoRepository;
+
+	public TransacaoService(TransacaoRepository transacaoRepository) {
+		this.transacaoRepository = transacaoRepository;
+	}
+
 	public void validarTransacao(TransacaoRequest transacaoRequest){
 
 		if (transacaoRequest.getValor() == null || transacaoRequest.getDataHora() == null) {
@@ -22,5 +28,9 @@ public class TransacaoService {
 			throw new IllegalArgumentException("Erro: Isso não é uma transação válida. Apenas transações anteriores ao presente são válidas.");
 		}
 
+	}
+
+	public void excluirTransacao(){
+		transacaoRepository.deletarDados();
 	}
 }
