@@ -14,6 +14,10 @@ public class TransacaoRepository {
 		transacaoLista.add(transacaoRequest);
 	}
 
+	public List<TransacaoRequest> retornarLista() {
+		return transacaoLista;
+	}
+
 	public void deletarDados(){
 		transacaoLista.clear();
 	}
