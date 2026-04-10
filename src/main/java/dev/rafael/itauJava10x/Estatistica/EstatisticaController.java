@@ -2,6 +2,7 @@ package dev.rafael.itauJava10x.Estatistica;
 
 import dev.rafael.itauJava10x.Transacao.TransacaoRepository;
 import dev.rafael.itauJava10x.Transacao.TransacaoRequest;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.OffsetDateTime;
+import java.util.DoubleSummaryStatistics;
 import java.util.List;
 
 @RestController
@@ -58,7 +60,19 @@ public class EstatisticaController {
 			estatisticaDTO.setSum(soma);
 			estatisticaDTO.setAvg(media);
 
-			return ResponseEntity.ok(estatisticaDTO);
+			return  ResponseEntity.status(HttpStatus.OK).body(estatisticaDTO);
+
+//			DoubleSummaryStatistics statistics = transacaoUltimoMinuto.stream()
+//					.mapToDouble(t -> t.getValor().doubleValue())
+//					.summaryStatistics();
+//
+//			return ResponseEntity.ok(new EstatisticaDTO(
+//					statistics.getCount(),
+//					BigDecimal.valueOf(statistics.getSum()).setScale(2, RoundingMode.HALF_UP),
+//					BigDecimal.valueOf(statistics.getAverage()).setScale(2, RoundingMode.HALF_UP),
+//					BigDecimal.valueOf(statistics.getMin()).setScale(2, RoundingMode.HALF_UP),
+//					BigDecimal.valueOf(statistics.getMax()).setScale(2, RoundingMode.HALF_UP)
+//			));
 		}
 
 		return ResponseEntity.ok(new EstatisticaDTO(0L, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO));
