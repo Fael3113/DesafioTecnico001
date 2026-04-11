@@ -23,6 +23,7 @@ public class TransacoesController {
 		try {
 			transacaoService.validarTransacao(transacaoRequest);
 			transacaoRepository.salvarDados(transacaoRequest);
+			System.out.println(transacaoRequest.getDataHora());
 			return ResponseEntity.status(HttpStatus.CREATED).body("Transação valida");
 		} catch (IllegalArgumentException e) {
 			return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body("Regra de negócio inválida");

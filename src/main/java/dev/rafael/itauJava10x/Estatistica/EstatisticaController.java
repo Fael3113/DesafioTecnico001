@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.DoubleSummaryStatistics;
 import java.util.List;
 
@@ -26,7 +27,7 @@ public class EstatisticaController {
 
 	@GetMapping
 	public ResponseEntity retornarTransacoes() {
-		OffsetDateTime intervalo = OffsetDateTime.now().minusMinutes(1);
+		OffsetDateTime intervalo = OffsetDateTime.now(ZoneOffset.UTC).minusMinutes(1);
 
 		List<TransacaoRequest> transacaoUltimoMinuto = transacaoRepository.retornarLista()
 				.stream()
@@ -34,45 +35,45 @@ public class EstatisticaController {
 				.toList();
 
 		if (!transacaoUltimoMinuto.isEmpty()) {
-			long count = transacaoUltimoMinuto.size();
-
-			BigDecimal maiorValor = transacaoUltimoMinuto.stream()
-					.map(TransacaoRequest::getValor)
-					.max(BigDecimal::compareTo)
-					.get();
-
-			BigDecimal menorValor = transacaoUltimoMinuto.stream()
-					.map(TransacaoRequest::getValor)
-					.min(BigDecimal::compareTo)
-					.get();
-
-			BigDecimal soma = transacaoUltimoMinuto.stream()
-					.map(TransacaoRequest::getValor)
-					.reduce(BigDecimal.ZERO, BigDecimal::add);
-
-			BigDecimal media = soma.divide(BigDecimal.valueOf(count), 2,
-					RoundingMode.HALF_UP);
-
-			EstatisticaDTO estatisticaDTO = new EstatisticaDTO();
-			estatisticaDTO.setCount(count);
-			estatisticaDTO.setMax(maiorValor);
-			estatisticaDTO.setMin(menorValor);
-			estatisticaDTO.setSum(soma);
-			estatisticaDTO.setAvg(media);
-
-			return  ResponseEntity.status(HttpStatus.OK).body(estatisticaDTO);
-
-//			DoubleSummaryStatistics statistics = transacaoUltimoMinuto.stream()
-//					.mapToDouble(t -> t.getValor().doubleValue())
-//					.summaryStatistics();
+//			long count = transacaoUltimoMinuto.size();
 //
-//			return ResponseEntity.ok(new EstatisticaDTO(
-//					statistics.getCount(),
-//					BigDecimal.valueOf(statistics.getSum()).setScale(2, RoundingMode.HALF_UP),
-//					BigDecimal.valueOf(statistics.getAverage()).setScale(2, RoundingMode.HALF_UP),
-//					BigDecimal.valueOf(statistics.getMin()).setScale(2, RoundingMode.HALF_UP),
-//					BigDecimal.valueOf(statistics.getMax()).setScale(2, RoundingMode.HALF_UP)
-//			));
+//			BigDecimal maiorValor = transacaoUltimoMinuto.stream()
+//					.map(TransacaoRequest::getValor)
+//					.max(BigDecimal::compareTo)
+//					.get();
+//
+//			BigDecimal menorValor = transacaoUltimoMinuto.stream()
+//					.map(TransacaoRequest::getValor)
+//					.min(BigDecimal::compareTo)
+//					.get();
+//
+//			BigDecimal soma = transacaoUltimoMinuto.stream()
+//					.map(TransacaoRequest::getValor)
+//					.reduce(BigDecimal.ZERO, BigDecimal::add);
+//
+//			BigDecimal media = soma.divide(BigDecimal.valueOf(count), 2,
+//					RoundingMode.HALF_UP);
+//
+//			EstatisticaDTO estatisticaDTO = new EstatisticaDTO();
+//			estatisticaDTO.setCount(count);
+//			estatisticaDTO.setMax(maiorValor);
+//			estatisticaDTO.setMin(menorValor);
+//			estatisticaDTO.setSum(soma);
+//			estatisticaDTO.setAvg(media);
+//
+//			return  ResponseEntity.status(HttpStatus.OK).body(estatisticaDTO);
+
+			DoubleSummaryStatistics statistics = transacaoUltimoMinuto.stream()
+					.mapToDouble(t -> t.getValor().doubleValue())
+					.summaryStatistics();
+
+			return ResponseEntity.ok(new EstatisticaDTO(
+					statistics.getCount(),
+					BigDecimal.valueOf(statistics.getSum()).setScale(2, RoundingMode.HALF_UP),
+					BigDecimal.valueOf(statistics.getAverage()).setScale(2, RoundingMode.HALF_UP),
+					BigDecimal.valueOf(statistics.getMin()).setScale(2, RoundingMode.HALF_UP),
+					BigDecimal.valueOf(statistics.getMax()).setScale(2, RoundingMode.HALF_UP)
+			));
 		}
 
 		return ResponseEntity.ok(new EstatisticaDTO(0L, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO));
