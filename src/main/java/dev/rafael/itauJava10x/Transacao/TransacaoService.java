@@ -16,15 +16,15 @@ public class TransacaoService {
 
 	public void validarTransacao(TransacaoRequest transacaoRequest){
 
-		if (transacaoRequest.getValor() == null || transacaoRequest.getDataHora() == null) {
+		if (transacaoRequest.valor() == null || transacaoRequest.dataHora() == null) {
 			throw new IllegalArgumentException("Campos obrigatórios ausentes.");
 		}
 
-		if (transacaoRequest.getValor().compareTo(BigDecimal.ZERO) < 0 ){
+		if (transacaoRequest.valor().compareTo(BigDecimal.ZERO) < 0 ){
 			throw new IllegalArgumentException("Erro: Isso não é uma transação válida. Apenas transações com valores positivos são válidos.");
 		}
 
-		if (transacaoRequest.getDataHora().isAfter(OffsetDateTime.now())){
+		if (transacaoRequest.dataHora().isAfter(OffsetDateTime.now())){
 			throw new IllegalArgumentException("Erro: Isso não é uma transação válida. Apenas transações anteriores ao presente são válidas.");
 		}
 

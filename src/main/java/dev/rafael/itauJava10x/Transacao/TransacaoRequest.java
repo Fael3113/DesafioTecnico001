@@ -1,24 +1,23 @@
 package dev.rafael.itauJava10x.Transacao;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PositiveOrZero;
 
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
-public class TransacaoRequest {
+public record TransacaoRequest (
 
-	private BigDecimal valor;
-	private OffsetDateTime dataHora;
+	@NotNull (message = "Valor da transação não pode ser nulo")
+	@PositiveOrZero (message = "Valor da transação deve ser maior ou igual a zero")
+	BigDecimal valor,
 
-	public void setDataHora(OffsetDateTime dataHora) {
+	@NotNull (message = "Data não pode ser nula")
+	OffsetDateTime dataHora) {
+	public TransacaoRequest {
 		if (dataHora != null) {
-			this.dataHora = dataHora.withOffsetSameInstant(ZoneOffset.UTC);
+			dataHora = dataHora.withOffsetSameInstant(ZoneOffset.UTC);
 		}
 	}
 

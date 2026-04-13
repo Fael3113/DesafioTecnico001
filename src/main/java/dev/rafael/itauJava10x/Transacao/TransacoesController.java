@@ -1,5 +1,6 @@
 package dev.rafael.itauJava10x.Transacao;
 
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +21,7 @@ public class TransacoesController {
 	}
 
 	@PostMapping
-	public ResponseEntity adicionar(@RequestBody TransacaoRequest transacaoRequest){
+	public ResponseEntity adicionar(@RequestBody @Valid TransacaoRequest transacaoRequest){
 
 		try {
 			transacaoService.validarTransacao(transacaoRequest);

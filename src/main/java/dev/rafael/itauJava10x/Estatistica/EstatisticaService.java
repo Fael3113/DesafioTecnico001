@@ -31,41 +31,43 @@ public class EstatisticaService {
 		log.info("Filtragem da lista: ");
 		List<TransacaoRequest> transacaoUltimoMinuto = transacaoRepository.retornarLista()
 				.stream()
-				.filter(t -> t.getDataHora().isAfter(intervalo))
+				.filter(t -> t.dataHora().isAfter(intervalo))
 				.toList();
 
 		if (!transacaoUltimoMinuto.isEmpty()) {
-//			long count = transacaoUltimoMinuto.size();
-//
-//			BigDecimal maiorValor = transacaoUltimoMinuto.stream()
-//					.map(TransacaoRequest::getValor)
-//					.max(BigDecimal::compareTo)
-//					.orElse(BigDecimal.ZERO);
-//
-//			BigDecimal menorValor = transacaoUltimoMinuto.stream()
-//					.map(TransacaoRequest::getValor)
-//					.min(BigDecimal::compareTo)
-//					.orElse(BigDecimal.ZERO);
-//
-//			BigDecimal soma = transacaoUltimoMinuto.stream()
-//					.map(TransacaoRequest::getValor)
-//					.reduce(BigDecimal.ZERO, BigDecimal::add);
-//
-//			BigDecimal media = soma.divide(BigDecimal.valueOf(count), 4,
-//					RoundingMode.HALF_UP);
-//
-//			EstatisticaDTO estatisticaDTO = new EstatisticaDTO();
-//			estatisticaDTO.setCount(count);
-//			estatisticaDTO.setMax(maiorValor);
-//			estatisticaDTO.setMin(menorValor);
-//			estatisticaDTO.setSum(soma);
-//			estatisticaDTO.setAvg(media);
-//
-//			return  ResponseEntity.status(HttpStatus.OK).body(estatisticaDTO);
+/*			log.info("Criação das estatísticas: ");
+			long count = transacaoUltimoMinuto.size();
+
+			BigDecimal maiorValor = transacaoUltimoMinuto.stream()
+					.map(TransacaoRequest::getValor)
+					.max(BigDecimal::compareTo)
+					.orElse(BigDecimal.ZERO);
+
+			BigDecimal menorValor = transacaoUltimoMinuto.stream()
+					.map(TransacaoRequest::getValor)
+					.min(BigDecimal::compareTo)
+					.orElse(BigDecimal.ZERO);
+
+			BigDecimal soma = transacaoUltimoMinuto.stream()
+					.map(TransacaoRequest::getValor)
+					.reduce(BigDecimal.ZERO, BigDecimal::add);
+
+			BigDecimal media = soma.divide(BigDecimal.valueOf(count), 4,
+					RoundingMode.HALF_UP);
+
+			EstatisticaDTO estatisticaDTO = new EstatisticaDTO();
+			estatisticaDTO.setCount(count);
+			estatisticaDTO.setMax(maiorValor);
+			estatisticaDTO.setMin(menorValor);
+			estatisticaDTO.setSum(soma);
+			estatisticaDTO.setAvg(media);
+
+			return  ResponseEntity.status(HttpStatus.OK).body(estatisticaDTO);
+ */
 
 			log.info("Criação das estatísticas: ");
 			DoubleSummaryStatistics statistics = transacaoUltimoMinuto.stream()
-					.mapToDouble(t -> t.getValor().doubleValue())
+					.mapToDouble(t -> t.valor().doubleValue())
 					.summaryStatistics();
 
 			return new EstatisticaDTO(
