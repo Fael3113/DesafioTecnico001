@@ -17,14 +17,16 @@ import java.util.List;
 public class EstatisticaService {
 
 	private final TransacaoRepository transacaoRepository;
+	private final EstatisticaProperties estatisticaProperties;
 
-	public EstatisticaService(TransacaoRepository transacaoRepository) {
+	public EstatisticaService(TransacaoRepository transacaoRepository, EstatisticaProperties estatisticaProperties) {
 		this.transacaoRepository = transacaoRepository;
+		this.estatisticaProperties = estatisticaProperties;
 	}
 
 	public EstatisticaDTO validarEstatistica(){
 
-		OffsetDateTime intervalo = OffsetDateTime.now(ZoneOffset.UTC).minusMinutes(1);
+		OffsetDateTime intervalo = OffsetDateTime.now(ZoneOffset.UTC).minusSeconds(estatisticaProperties.segundos());
 
 		log.info("Filtragem da lista: ");
 		List<TransacaoRequest> transacaoUltimoMinuto = transacaoRepository.retornarLista()
