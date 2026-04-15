@@ -1,5 +1,6 @@
 package dev.rafael.itauJava10x.Transacao;
 
+import dev.rafael.itauJava10x.Docs.TransacaoControllerDoc;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -9,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 @Slf4j
 @RestController
 @RequestMapping("/transacao")
-public class TransacoesController {
+public class TransacoesController implements TransacaoControllerDoc {
 
 	private final TransacaoService transacaoService;
 
